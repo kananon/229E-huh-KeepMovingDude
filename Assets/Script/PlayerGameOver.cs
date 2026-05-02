@@ -45,4 +45,16 @@ public class PlayerGameOver : MonoBehaviour
         Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
+    public void RestartButton()
+    {
+        SceneManager.LoadScene("SampleScene");
+    }
+    public void MainMenuButton()
+    {
+        SceneManager.LoadScene("MainMenu");
+    }
+    public void CreditButton()
+    {
+        SceneManager.LoadScene("Credit");
+    }
 }

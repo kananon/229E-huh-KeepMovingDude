@@ -3,18 +3,11 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement Settings")]
-    public float moveForce = 10f;
-    public float maxSpeed = 5f;
-
-    [Header("Jump Settings")]
-    public float jumpForce = 7f;
-    public Transform groundCheck;
-    public float groundCheckRadius = 0.2f;
-    public LayerMask groundLayer;
+    public float moveForce = 10f;     // แรงที่ใช้ในการเคลื่อนที่
+    public float maxSpeed = 5f;       // จำกัดความเร็วสูงสุด
 
     private Rigidbody2D rb;
     private Vector2 movement;
-    private bool isGrounded;
 
     void Start()
     {
@@ -23,20 +16,11 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        // เดิน
+        // รับ input จาก keyboard
         float moveX = Input.GetAxis("Horizontal");
         float moveY = Input.GetAxis("Vertical");
 
         movement = new Vector2(moveX, moveY).normalized;
-
-        // เช็คพื้น
-        isGrounded = Physics2D.OverlapCircle(groundCheck.position, groundCheckRadius, groundLayer);
-
-        // กระโดด
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
-        {
-            Jump();
-        }
     }
 
     void FixedUpdate()
@@ -47,19 +31,16 @@ public class PlayerMovement : MonoBehaviour
 
     void Move()
     {
+        // ใช้ AddForce ตามโจทย์ (Physics-based movement)
         rb.AddForce(movement * moveForce);
     }
 
     void LimitSpeed()
     {
+        // จำกัดความเร็วไม่ให้ไวเกินไป
         if (rb.linearVelocity.magnitude > maxSpeed)
         {
             rb.linearVelocity = rb.linearVelocity.normalized * maxSpeed;
         }
-    }
-
-    void Jump()
-    {
-        rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
     }
 }
