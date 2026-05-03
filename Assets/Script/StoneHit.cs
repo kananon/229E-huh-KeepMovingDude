@@ -9,20 +9,24 @@ public class StoneHit : MonoBehaviour
             GhostAI ghost = other.GetComponent<GhostAI>();
             if (ghost != null)
             {
+                // หยุดผี
                 ghost.enabled = false;
-                Invoke("ResumeGhost", 2f);
+
+                // สั่งให้ผีตัวนี้กลับมาทำงานอีกครั้ง
+                StartCoroutine(ResumeGhostAfterDelay(ghost, 2f));
             }
 
             Destroy(gameObject);
         }
     }
 
-    void ResumeGhost()
+    System.Collections.IEnumerator ResumeGhostAfterDelay(GhostAI ghost, float delay)
     {
-        GameObject ghost = GameObject.FindGameObjectWithTag("Ghost");
+        yield return new WaitForSeconds(delay);
+
         if (ghost != null)
         {
-            ghost.GetComponent<GhostAI>().enabled = true;
+            ghost.enabled = true;
         }
     }
 }
